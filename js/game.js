@@ -163,7 +163,7 @@ async function e_attack(){
   if (enemy.skill=="freeze"){
     if (chance(0.2)){
       player.status="freeze";
-      set_Message(player.name+"は凍ってしまった！");
+      set_Message(player.name+"は凍ってしまった!！");
       await wait(1000);
     }
   }
