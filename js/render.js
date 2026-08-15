@@ -1,6 +1,6 @@
 let scene = "start";
 let sceneHistory = [];
-let stage=1;
+let stage=3;
 let slashEffect=false;
 let x = 0;
 let y = 0;

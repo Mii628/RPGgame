@@ -186,21 +186,23 @@ async function coment(amount,turn){
       await get_gold();
       message="";
       }else{
-        await wait(1000)
-        if (stage==1){
+        await wait(1000);
+        if (stage!=3){
           stage++;
           MAP = structuredClone(stagedata[stage].MAP);
           enemyMaster = structuredClone(stagedata[stage].enemies);
           boss = structuredClone(stagedata[stage].boss);
           x = 0;
           y = 0;
+          set_Message("次のステージに進む！");
+          await wait(1000);
           change_scene("map");
         }else{
         change_scene("ending");
         }
       }
     }
-  }else if (turn == "player"){
+    }else if (turn == "player"){
     if (player.hp > 0){
       set_Message(player.name + "はまだいきている！");
     }else{

@@ -26,5 +26,13 @@ const stagedata={
     "boss":{name:"アイスドラゴン",hp:120,attack:12,image:dragon_Icon,skill:"freeze"},
     "tiles":{heal:"山小屋",battle:"雪原",boss:"ボス"},
     "Icon":{heal:loghouse_Icon,battle:snowforest_Icon,boss:dragon_Icon}
+  },
+  3:{
+    "MAP":[["温泉","火山","火山"],["火山","火山","火山"],["火山","火山","ボス"]],
+    "enemies":[{name:"マグマスライム",hp:40,attack:9,exp:7,gold:12,image:slime_Icon},
+                {name:"フレイムホース",hp:50,attack:10,exp:9,gold:16,image:horse_Icon}],
+    "boss":{name:"ファイアドラゴン",hp:150,attack:15,image:dragon_Icon},
+    "tiles":{heal:"温泉",battle:"火山",boss:"ボス"},
+    "Icon":{heal:hotspring_Icon,battle:volcano_Icon,boss:dragon_Icon}
   }
 }
