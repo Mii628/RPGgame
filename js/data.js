@@ -1,4 +1,5 @@
-let player = {name:"勇者",hp:30,maxhp:30,mp:5,maxmp:5,attack:5,exp:0,level:1,defense:0,evade:0,force:0,gold:100,status:""};
+let player = {name:"勇者",hp:30,maxhp:30,mp:5,maxmp:5,attack:5,exp:0,level:1,defense:0,evade:0,force:0,gold:0,
+  status:""};
 const items = [{name:"potion",heal:10},{name:"ether",mp:10},{name:"hipotion",heal:15}];
 const army_list =[{name:"素手",force:0,category:"starter"},{name:"布きれ",defense:0,category:"starter"},{name:"革のふく",defense:2,gold:10,category:"armor"},{name:"木のぼう",force:2,gold:10,category:"weapon"}]
 const inventry = {potion:0,ether:0,hipotion:0};
@@ -27,4 +28,3 @@ const stagedata={
     "Icon":{heal:loghouse_Icon,battle:snowforest_Icon,boss:dragon_Icon}
   }
 }
-console.log("data.js loaded");
