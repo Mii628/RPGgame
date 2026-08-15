@@ -22,7 +22,7 @@ const stagedata={
   2:{
     "MAP":[["山小屋","雪原","雪原"],["雪原","雪原","雪原"],["雪原","雪原","ボス"]],
     "enemies":[{name:"ゆきだるま",hp:25,attack:5,exp:5,gold:8,image:snowman_Icon,skill:"freeze"},
-               {name:"ゆきねこ",hp:20,attack:6,evade:0.15,exp:5,gold:10,image:cat_Icon}],
+         {name:"ゆきねこ",hp:20,attack:6,evade:0.15,exp:5,gold:10,image:cat_Icon}],
     "boss":{name:"アイスドラゴン",hp:120,attack:12,image:dragon_Icon,skill:"freeze"},
     "tiles":{heal:"山小屋",battle:"雪原",boss:"ボス"},
     "Icon":{heal:loghouse_Icon,battle:snowforest_Icon,boss:dragon_Icon}
@@ -30,8 +30,8 @@ const stagedata={
   3:{
     "MAP":[["温泉","火山","火山"],["火山","火山","火山"],["火山","火山","ボス"]],
     "enemies":[{name:"マグマスライム",hp:40,attack:9,exp:7,gold:12,image:slime_Icon},
-                {name:"フレイムホース",hp:50,attack:10,exp:9,gold:16,image:horse_Icon}],
-    "boss":{name:"ファイアドラゴン",hp:150,attack:15,image:dragon_Icon},
+                {name:"フレイムホース",hp:50,attack:10,exp:9,gold:16,image:horse_Icon,skill:"burn"}],
+    "boss":{name:"ファイアドラゴン",hp:150,attack:15,image:dragon_Icon,skill:"burn"},
     "tiles":{heal:"温泉",battle:"火山",boss:"ボス"},
     "Icon":{heal:hotspring_Icon,battle:volcano_Icon,boss:dragon_Icon}
   }

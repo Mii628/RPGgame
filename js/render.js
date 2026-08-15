@@ -1,6 +1,6 @@
 let scene = "start";
 let sceneHistory = [];
-let stage=3;
+let stage=1;
 let slashEffect=false;
 let x = 0;
 let y = 0;
@@ -209,6 +209,7 @@ function change_scene(nextscene){
 
 function back(){
   scene = sceneHistory.pop();
+  player.status = "";
   message="";
   render();
 }

@@ -29,6 +29,7 @@ function reset_Game(){
   enemyMaster = structuredClone(stagedata[stage].enemies);
   boss = structuredClone(stagedata[stage].boss);
   turn = "player";
+  player.status = "";
   x=0;
   y=0;
   equipment = {weapon:"素手",armor:"布きれ"}
@@ -76,6 +77,7 @@ async function move(muki){
 async function full_heal(){
   player.hp=player.maxhp;
   player.mp=player.maxmp;
+  player.status = "";
   set_Message("HPとMPが全回復した！");
 }
 
@@ -129,6 +131,10 @@ async function p_attack(){
     await wait(1000);
     e_attack();
     return;
+  }else if (player.status=="burn"){
+    player.hp -= 2;
+    set_Message(player.name+"はやけどで2ダメージ！");
+    await wait(1000);
   }
   let d = Attack(player,enemy);
   turn = "enemy"
@@ -163,7 +169,13 @@ async function e_attack(){
   if (enemy.skill=="freeze"){
     if (chance(0.2)){
       player.status="freeze";
-      set_Message(player.name+"は凍ってしまった!！");
+      set_Message(player.name+"は凍ってしまった!");
+      await wait(1000);
+    }
+  }else if (enemy.skill=="burn"){
+    if (chance(0.2)){
+      player.status="burn";
+      set_Message(player.name+"はやけどしてしまった!");
       await wait(1000);
     }
   }
@@ -176,7 +188,8 @@ async function coment(amount,turn){
     if (enemy.hp > 0){
       set_Message(enemy.name + "はまだいきている！");
     }else{
-      set_Message(enemy.name + "をたおした！"); 
+      set_Message(enemy.name + "をたおした！");
+      player.status="";
       if (flag =="normal"){
       await wait(1000);
       await drop_item();
@@ -227,6 +240,10 @@ async function p_magic(a){
     await wait(1000);
     e_attack();
     return;
+  }else if (player.status=="burn"){
+    player.hp -= 2;
+    set_Message(player.name+"はやけどで2ダメージ！");
+    await wait(1000);
   }
   const magic = magic_list.find(item => item.name === a);
   if (turn !== "player"){return};
@@ -263,6 +280,10 @@ async function heal(){
     await wait(1000);
     e_attack();
     return;
+  }else if (player.status=="burn"){
+    player.hp -= 2;
+    set_Message(player.name+"はやけどで2ダメージ！");
+    await wait(1000);
   }
   if (turn !== "player"){return};
   if (player.mp < 2){
@@ -323,6 +344,11 @@ async function use_item(item_name){
   if (!inventry[item_name]){
     set_Message("そのアイテムはありません");
     return;
+  }
+  if (player.status=="burn"){
+    player.hp -= 2;
+    set_Message(player.name+"はやけどで2ダメージ！");
+    await wait(1000);
   }
   inventry[item_name]--;
   if (item.heal){
