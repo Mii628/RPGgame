@@ -10,6 +10,7 @@ function chance(rate){
 // ========================================
 // タイトル・ゲーム開始
 // ========================================
+let MAP = [];
 function start_Game(){
   let name = document.getElementById("nameInput").value;
   MAP = structuredClone(stagedata[stage].MAP);
@@ -25,7 +26,6 @@ function start_Game(){
 function reset_Game(){
   player = {name:"勇者",hp:30,maxhp:30,mp:5,maxmp:5,attack:5,level:1,exp:0,defense:0,force:0,gold:0,status:""};
   stage = 1;
-  MAP = structuredClone(stagedata[stage].MAP);
   enemyMaster = structuredClone(stagedata[stage].enemies);
   boss = structuredClone(stagedata[stage].boss);
   turn = "player";
@@ -42,7 +42,7 @@ function reset_Game(){
 // ========================================
 async function move(muki){
   if (muki=='right'){
-    if (x<2){
+    if (x<4){
       x++;
     }else{return}
   }
@@ -56,7 +56,7 @@ async function move(muki){
       y-=1;
     }else{return}
   }else if (muki=="down"){
-    if (y<2){
+    if (y<4){
       y++;
     }else{return}
   }

@@ -4,6 +4,7 @@ let stage=1;
 let slashEffect=false;
 let x = 0;
 let y = 0;
+
 function render(){
   const menu = document.getElementById("menu");
   if (scene == "start"){
@@ -51,27 +52,11 @@ function render(){
     ${magicButtons}
     <button onclick="back()">もどる</button>`;
   }else if (scene == "map"){
-   let MAPview=MAP.map((row,rowIndex)=>{
-     return row.map((place, colIndex) => {
-      if(MAP[rowIndex][colIndex]==stagedata[stage].tiles.heal){if(y === rowIndex && x === colIndex){
-        return `<span class="current mapIcon">${stagedata[stage].Icon.heal}</span>`;
-      }return `<span class="mapIcon">${stagedata[stage].Icon.heal}</span>`;
-      }else if (MAP[rowIndex][colIndex]==stagedata[stage].tiles.battle){if(y === rowIndex && x === colIndex){
-        return `<span class="current mapIcon">${stagedata[stage].Icon.battle}</span>`;
-      }return `<span class="mapIcon">${stagedata[stage].Icon.battle}</span>`;
-      }else if (MAP[rowIndex][colIndex]==stagedata[stage].tiles.boss){if(y === rowIndex && x === colIndex){
-        return `<span class="current mapIcon">${stagedata[stage].Icon.boss}</span>`;}
-        return `<span class="mapIcon">${stagedata[stage].Icon.boss}</span>`;       
-      }
-     return place;
-   }).join(" ");
-  }).join("<br>");
     menu.innerHTML = `
+    <canvas id="game" width="1250" height="400"></canvas>
     <div id="msg">${message}</div>
-    <h2>マップ</h2>
     <div>現在地：${MAP[y][x]}</div>
     <div>座標　：${y},${x}</div>
-    <div class="map">${MAPview}</div>
     <div class="move-buttons">
     <button onclick="move('up')">↑上</button>
     </div>
@@ -84,7 +69,9 @@ function render(){
     </div>
     <button onclick="change_scene('menu')">メニュー</button>
     <button onclick="change_scene('bukiya')">武器屋</button>
-    <button onclick="reset_Game()">タイトルにもどる</button>`;
+    <button onclick="reset_Game()">タイトルにもどる</button>`; 
+    
+    drawMap();
   }else if (scene == "item"){
     let itemButtons=`<button onclick="use_item('potion')">ポーション：${inventry.potion}</button>
     <button onclick="use_item('ether')">エーテル：${inventry.ether}</button>
@@ -212,4 +199,48 @@ function back(){
   player.status = "";
   message="";
   render();
+}
+
+
+function drawMap(){
+    const canvas = document.getElementById("game");
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const TILE_SIZE = 70;
+    const mapWidth = MAP[0].length * TILE_SIZE;
+    const mapHeight = MAP.length * TILE_SIZE;
+    const offsetX = (canvas.width - mapWidth) / 2;
+    const offsetY = (canvas.height - mapHeight) / 2;
+    for (let row = 0; row < MAP.length; row++) {
+      for (let col = 0; col < MAP[row].length; col++) {
+        const drawX = offsetX + col * TILE_SIZE;
+        const drawY = offsetY + row * TILE_SIZE;
+
+        if (MAP[row][col] === stagedata[stage].tiles.heal) {
+            ctx.drawImage(houseImg,drawX,drawY,TILE_SIZE,TILE_SIZE);
+        }
+        else if (MAP[row][col] === stagedata[stage].tiles.battle) {
+            ctx.drawImage(forestImg,drawX,drawY,TILE_SIZE,TILE_SIZE);
+        }
+        else if (MAP[row][col] === stagedata[stage].tiles.boss) {
+            ctx.drawImage(dragonImg,drawX,drawY,TILE_SIZE,TILE_SIZE);
+        }
+        else {
+            ctx.fillStyle = "lightgray";
+        }
+        ctx.strokeRect(drawX, drawY, TILE_SIZE, TILE_SIZE);
+    }
+  }
+    // プレイヤー
+    const HERO_SIZE = 40;
+    ctx.beginPath();
+    ctx.arc(
+    offsetX + x * TILE_SIZE + TILE_SIZE / 2,
+    offsetY + y * TILE_SIZE + TILE_SIZE / 2 + 25,
+    HERO_SIZE / 2 - 8,
+    0,
+    Math.PI * 2
+  );
+    ctx.fillStyle = "cyan";
+    ctx.fill();
 }

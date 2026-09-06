@@ -6,33 +6,45 @@ const cat_Icon=`<svg viewBox="0 0 512 512" fill="#ffffff">
 const horse_Icon=`<svg viewBox="0 0 576 512" fill="#ffffff">
   <path d="M575.92 76.6c-.01-8.13-3.02-15.87-8.58-21.8-3.78-4.03-8.58-9.12-13.69-14.5 11.06-6.84 19.5-17.49 22.18-30.66C576.85 4.68 572.96 0 567.9 0H447.92c-70.69 0-128 57.31-128 128H160c-28.84 0-54.4 12.98-72 33.11V160c-48.53 0-88 39.47-88 88v56c0 8.84 7.16 16 16 16h16c8.84 0 16-7.16 16-16v-56c0-13.22 6.87-24.39 16.78-31.68-.21 2.58-.78 5.05-.78 7.68 0 27.64 11.84 52.36 30.54 69.88l-25.72 68.6a63.945 63.945 0 0 0-2.16 37.99l24.85 99.41A15.982 15.982 0 0 0 107.02 512h65.96c10.41 0 18.05-9.78 15.52-19.88l-26.31-105.26 23.84-63.59L320 345.6V496c0 8.84 7.16 16 16 16h64c8.84 0 16-7.16 16-16V318.22c19.74-20.19 32-47.75 32-78.22 0-.22-.07-.42-.08-.64V136.89l16 7.11 18.9 37.7c7.45 14.87 25.05 21.55 40.49 15.37l32.55-13.02a31.997 31.997 0 0 0 20.12-29.74l-.06-77.71zm-64 19.4c-8.84 0-16-7.16-16-16s7.16-16 16-16 16 7.16 16 16-7.16 16-16 16z" />
 </svg>`
-const dragon_Icon=`<svg viewBox="0 0 640 512" fill="white">
+const dragon_Icon = `
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 640 512"
+     fill="white">
   <path d="M18.32 255.78L192 223.96l-91.28 68.69c-10.08 10.08-2.94 27.31 11.31 27.31h222.7c-9.44-26.4-14.73-54.47-14.73-83.38v-42.27l-119.73-87.6c-23.82-15.88-55.29-14.01-77.06 4.59L5.81 227.64c-12.38 10.33-3.45 30.42 12.51 28.14zm556.87 34.1l-100.66-50.31A47.992 47.992 0 0 1 448 196.65v-36.69h64l28.09 22.63c6 6 14.14 9.37 22.63 9.37h30.97a32 32 0 0 0 28.62-17.69l14.31-28.62a32.005 32.005 0 0 0-3.02-33.51l-74.53-99.38C553.02 4.7 543.54 0 533.47 0H296.02c-7.13 0-10.7 8.57-5.66 13.61L352 63.96 292.42 88.8c-5.9 2.95-5.9 11.36 0 14.31L352 127.96v108.62c0 72.08 36.03 139.39 96 179.38-195.59 6.81-344.56 41.01-434.1 60.91C5.78 478.67 0 485.88 0 494.2 0 504 7.95 512 17.76 512h499.08c63.29.01 119.61-47.56 122.99-110.76 2.52-47.28-22.73-90.4-64.64-111.36zM489.18 66.25l45.65 11.41c-2.75 10.91-12.47 18.89-24.13 18.26-12.96-.71-25.85-12.53-21.52-29.67z"/>
-</svg>`
-const house_Icon=`<svg viewBox="0 0 100 110">
-<polygon points="50,10 10,50 90,50" fill="red"/>
-<rect x="20" y="50" width="60" height="60" fill="#F2E8DC"/>
-<rect x="35" y="60" width="30" height="30" fill="#B7D7F0"/>
-<line x1="50" y1="60" x2="50" y2="90" stroke="black" stroke-width="3"/>
-<line x1="35" y1="60" x2="35" y2="90" stroke="black" stroke-width="3"/>
-<line x1="65" y1="60" x2="65" y2="90" stroke="black" stroke-width="3"/>
-<line x1="35" y1="60" x2="65" y2="60" stroke="black" stroke-width="3"/>
-<line x1="35" y1="75" x2="65" y2="75" stroke="black" stroke-width="3"/>
-<line x1="35" y1="90" x2="65" y2="90" stroke="black" stroke-width="3"/>
-</svg>`
-const loghouse_Icon=`<svg viewBox="0 0 100 110">
-<polygon points="50,10 10,50 90,50" fill="#5B3923"/>
-<rect x="20" y="50" width="60" height="60" fill="#B67A3A"/>
-<rect x="35" y="60" width="30" height="30" fill="#FFD966"/>
-<line x1="50" y1="60" x2="50" y2="90" stroke="black" stroke-width="3"/>
-<line x1="35" y1="60" x2="35" y2="90" stroke="black" stroke-width="3"/>
-<line x1="65" y1="60" x2="65" y2="90" stroke="black" stroke-width="3"/>
-<line x1="35" y1="60" x2="65" y2="60" stroke="black" stroke-width="3"/>
-<line x1="35" y1="75" x2="65" y2="75" stroke="black" stroke-width="3"/>
-<line x1="35" y1="90" x2="65" y2="90" stroke="black" stroke-width="3"/>
-</svg>`
+</svg>
+`;
+
+
+const house_Icon = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 110">
+  <polygon points="50,10 10,50 90,50" fill="red"/>
+  <rect x="20" y="50" width="60" height="60" fill="#F2E8DC"/>
+  <rect x="35" y="60" width="30" height="30" fill="#B7D7F0"/>
+  <line x1="50" y1="60" x2="50" y2="90" stroke="black" stroke-width="3"/>
+  <line x1="35" y1="60" x2="35" y2="90" stroke="black" stroke-width="3"/>
+  <line x1="65" y1="60" x2="65" y2="90" stroke="black" stroke-width="3"/>
+  <line x1="35" y1="60" x2="65" y2="60" stroke="black" stroke-width="3"/>
+  <line x1="35" y1="75" x2="65" y2="75" stroke="black" stroke-width="3"/>
+  <line x1="35" y1="90" x2="65" y2="90" stroke="black" stroke-width="3"/>
+</svg>
+`;
+
+const loghouse_Icon = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 110">
+  <polygon points="50,10 10,50 90,50" fill="#5B3923"/>
+  <rect x="20" y="50" width="60" height="60" fill="#B67A3A"/>
+  <rect x="35" y="60" width="30" height="30" fill="#FFD966"/>
+  <line x1="50" y1="60" x2="50" y2="90" stroke="black" stroke-width="3"/>
+  <line x1="35" y1="60" x2="35" y2="90" stroke="black" stroke-width="3"/>
+  <line x1="65" y1="60" x2="65" y2="90" stroke="black" stroke-width="3"/>
+  <line x1="35" y1="60" x2="65" y2="60" stroke="black" stroke-width="3"/>
+  <line x1="35" y1="75" x2="65" y2="75" stroke="black" stroke-width="3"/>
+  <line x1="35" y1="90" x2="65" y2="90" stroke="black" stroke-width="3"/>
+</svg>
+`;
+
 const hotspring_Icon=`
-<svg viewBox="0 0 100 100">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
   <rect x="15" y="50" width="70" height="25"
         rx="5"
         fill="#7ec8e3"
@@ -59,23 +71,57 @@ const hotspring_Icon=`
 </svg>
 `;
 
-const forest_Icon=`<svg viewBox="0 0 100 110">
-<rect x="37.5" y="60" width="25" height="45" fill="#8B5A2B"/>
-<circle cx="50" cy="35" r="20" fill="#2E8B57"/>
-<circle cx="38" cy="50" r="20" fill="#2E8B57"/>
-<circle cx="63" cy="50" r="20" fill="#2E8B57"/>
-<circle cx="65" cy="52" r="5" fill="red"/>
-</svg>`
+const forest_Icon = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 110">
+  <rect x="37.5" y="60" width="25" height="45" fill="#8B5A2B"/>
+  <circle cx="50" cy="35" r="20" fill="#2E8B57"/>
+  <circle cx="38" cy="50" r="20" fill="#2E8B57"/>
+  <circle cx="63" cy="50" r="20" fill="#2E8B57"/>
+  <circle cx="65" cy="52" r="5" fill="red"/>
+</svg>
+`;
 
-const snowforest_Icon=`<svg viewBox="0 0 100 110">
-<rect x="37.5" y="60" width="25" height="45" fill="#8B5A2B"/>
-<polygon points="50,15 25,55 75,55" fill="#2F6F5A"/>
-<polygon points="50,30 20,75 80,75" fill="#2F6F5A"/>
-<polygon points="50,15 34,40 66,40" fill="white"/>
-</svg>`
+const snowforest_Icon = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 110">
+  <rect x="37.5" y="60" width="25" height="45" fill="#8B5A2B"/>
+  <polygon points="50,15 25,55 75,55" fill="#2F6F5A"/>
+  <polygon points="50,30 20,75 80,75" fill="#2F6F5A"/>
+  <polygon points="50,15 34,40 66,40" fill="white"/>
+</svg>
+`;
 
-const volcano_Icon=`<svg viewBox="0 0 100 110">
-<polygon points="50,10 10,90 90,90" fill="#A52A2A"/>
-<polygon points="50,10 30,60 70,60" fill="#FF4500"/>
-<polygon points="50,10 40,40 60,40" fill="#FFD700"/>
-</svg>`
+const volcano_Icon = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 110">
+  <polygon points="50,10 10,90 90,90" fill="#A52A2A"/>
+  <polygon points="50,10 30,60 70,60" fill="#FF4500"/>
+  <polygon points="50,10 40,40 60,40" fill="#FFD700"/>
+</svg>
+`;
+
+function svgToImage(svgText) {
+
+    const blob = new Blob(
+        [svgText],
+        { type: "image/svg+xml" }
+    );
+
+    const url = URL.createObjectURL(blob);
+
+    const img = new Image();
+    img.src = url;
+
+    return img;
+}
+
+// SVGアイコンを画像に変換
+//heal spot
+const houseImg = svgToImage(house_Icon);
+const loghouseImg = svgToImage(loghouse_Icon);
+const hotspringImg = svgToImage(hotspring_Icon);
+//battle spot
+const forestImg = svgToImage(forest_Icon);
+const snowforestImg = svgToImage(snowforest_Icon);
+const volcanoImg = svgToImage(volcano_Icon);
+//boss
+const dragonImg = svgToImage(dragon_Icon);
+
