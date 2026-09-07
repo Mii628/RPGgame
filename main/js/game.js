@@ -229,7 +229,7 @@ async function coment(amount,turn){
 // ========================================
 // 魔法
 // ========================================
-magic_list=[{name:"fire",mp:3,attack:8},{name:"thunder",mp:4,attack:10}];
+let magic_list=[{name:"fire",mp:3,attack:8},{name:"thunder",mp:4,attack:10}];
 
 async function p_magic(a){
   change_scene("battle")

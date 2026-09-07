@@ -4,6 +4,8 @@ let stage=1;
 let slashEffect=false;
 let x = 0;
 let y = 0;
+let drawPlayerX = 0;
+let drawPlayerY = 0;
 
 function render(){
   const menu = document.getElementById("menu");
@@ -56,7 +58,6 @@ function render(){
     <canvas id="game" width="1250" height="400"></canvas>
     <div id="msg">${message}</div>
     <div>現在地：${MAP[y][x]}</div>
-    <div>座標　：${y},${x}</div>
     <div class="move-buttons">
     <button onclick="move('up')">↑上</button>
     </div>
@@ -97,7 +98,7 @@ function render(){
     <div>次のレベルまであと　${player.level * 2 + 3 - player.exp}</div>
     <br>
     <div>攻撃: ${player.attack}</div>
-    <div>武器補正: ${player.force}</div>
+    <div>武器補正: +${player.force}</div>
     <div>防御: ${player.defense}</div>
     <br>
     <div>武器: ${equipment.weapon ?? "なし"}</div>
@@ -165,7 +166,7 @@ function render(){
     .filter(item => item.category === "armor")
     .map(item => `
       <button onclick="equip_army('${item.name}')">
-        ${item.name} 防御+${item.defense} 回避+${item.evade || 0} 
+        ${item.name} 防御+${item.defense}
         ${item.name === equipment.armor ? "[装備中]" : ""} 
       </button>
     `)
@@ -216,31 +217,51 @@ function drawMap(){
         const drawX = offsetX + col * TILE_SIZE;
         const drawY = offsetY + row * TILE_SIZE;
 
-        if (MAP[row][col] === stagedata[stage].tiles.heal) {
-            ctx.drawImage(houseImg,drawX,drawY,TILE_SIZE,TILE_SIZE);
+        if (MAP[row][col] === stagedata.tiles.heal) {
+            ctx.drawImage(stagedata.Img.heal,drawX,drawY,TILE_SIZE,TILE_SIZE);
         }
-        else if (MAP[row][col] === stagedata[stage].tiles.battle) {
-            ctx.drawImage(forestImg,drawX,drawY,TILE_SIZE,TILE_SIZE);
+        else if (MAP[row][col] === stagedata.tiles.battle) {
+            ctx.drawImage(stagedata.Img.battle,drawX,drawY,TILE_SIZE,TILE_SIZE);
         }
-        else if (MAP[row][col] === stagedata[stage].tiles.boss) {
-            ctx.drawImage(dragonImg,drawX,drawY,TILE_SIZE,TILE_SIZE);
-        }
-        else {
-            ctx.fillStyle = "lightgray";
+        else if (MAP[row][col] === stagedata.tiles.boss) {
+            ctx.drawImage(stagedata.Img.boss,drawX,drawY,TILE_SIZE,TILE_SIZE);
         }
         ctx.strokeRect(drawX, drawY, TILE_SIZE, TILE_SIZE);
+        }
     }
-  }
     // プレイヤー
+    let targetX = offsetX + x * TILE_SIZE + TILE_SIZE / 2;
+    let targetY = offsetY + y * TILE_SIZE + TILE_SIZE / 2 + 25;
+    if (drawPlayerX === 0 && drawPlayerY === 0) {
+    drawPlayerX = targetX;
+    drawPlayerY = targetY;
+}
     const HERO_SIZE = 40;
+    drawPlayerX += (targetX - drawPlayerX) * 0.05;
+    drawPlayerY += (targetY - drawPlayerY) * 0.05;
     ctx.beginPath();
     ctx.arc(
-    offsetX + x * TILE_SIZE + TILE_SIZE / 2,
-    offsetY + y * TILE_SIZE + TILE_SIZE / 2 + 25,
+    drawPlayerX,
+    drawPlayerY,
     HERO_SIZE / 2 - 8,
     0,
     Math.PI * 2
   );
     ctx.fillStyle = "cyan";
     ctx.fill();
+    if (Math.abs(drawPlayerX - targetX) < 1 && Math.abs(drawPlayerY - targetY) < 1) {
+        drawPlayerX = targetX;
+        drawPlayerY = targetY;
+    }
 }
+
+function gameLoop(){
+
+    if(scene === "map"){
+        drawMap();
+    }
+
+    requestAnimationFrame(gameLoop);
+}
+
+gameLoop();

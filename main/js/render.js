@@ -217,13 +217,13 @@ function drawMap(){
         const drawY = offsetY + row * TILE_SIZE;
 
         if (MAP[row][col] === stagedata[stage].tiles.heal) {
-            ctx.drawImage(houseImg,drawX,drawY,TILE_SIZE,TILE_SIZE);
+            ctx.drawImage(stagedata[stage].Img.heal,drawX,drawY,TILE_SIZE,TILE_SIZE);
         }
         else if (MAP[row][col] === stagedata[stage].tiles.battle) {
-            ctx.drawImage(forestImg,drawX,drawY,TILE_SIZE,TILE_SIZE);
+            ctx.drawImage(stagedata[stage].Img.battle,drawX,drawY,TILE_SIZE,TILE_SIZE);
         }
         else if (MAP[row][col] === stagedata[stage].tiles.boss) {
-            ctx.drawImage(dragonImg,drawX,drawY,TILE_SIZE,TILE_SIZE);
+            ctx.drawImage(stagedata[stage].Img.boss,drawX,drawY,TILE_SIZE,TILE_SIZE);
         }
         else {
             ctx.fillStyle = "lightgray";

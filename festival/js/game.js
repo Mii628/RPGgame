@@ -13,9 +13,9 @@ function chance(rate){
 let MAP = [];
 function start_Game(){
   let name = document.getElementById("nameInput").value;
-  MAP = structuredClone(stagedata[stage].MAP);
-  enemyMaster = structuredClone(stagedata[stage].enemies);
-  boss = structuredClone(stagedata[stage].boss);
+  MAP = structuredClone(stagedata.MAP);
+  enemyMaster = structuredClone(stagedata.enemies);
+  boss = structuredClone(stagedata.boss);
   if (name !== ""){
     player.name = name
   }
@@ -24,12 +24,11 @@ function start_Game(){
 }
 
 function reset_Game(){
-  player = {name:"勇者",hp:30,maxhp:30,mp:5,maxmp:5,attack:5,level:1,exp:0,defense:0,force:0,gold:0,status:""};
+  player = {name:"勇者",hp:30,maxhp:30,mp:5,maxmp:5,attack:5,level:1,exp:0,defense:0,force:0,gold:0};
   stage = 1;
-  enemyMaster = structuredClone(stagedata[stage].enemies);
-  boss = structuredClone(stagedata[stage].boss);
+  enemyMaster = structuredClone(stagedata.enemies);
+  boss = structuredClone(stagedata.boss);
   turn = "player";
-  player.status = "";
   x=0;
   y=0;
   equipment = {weapon:"素手",armor:"布きれ"}
@@ -41,8 +40,11 @@ function reset_Game(){
 // マップ処理
 // ========================================
 async function move(muki){
+    if (moving){
+    set_Message("移動中は操作できません");
+    return;}
   if (muki=='right'){
-    if (x<4){
+    if (x<2){
       x++;
     }else{return}
   }
@@ -56,23 +58,27 @@ async function move(muki){
       y-=1;
     }else{return}
   }else if (muki=="down"){
-    if (y<4){
+    if (y<2){
       y++;
     }else{return}
   }
-  if (MAP[y][x]==stagedata[stage].tiles.battle){
-    if (chance(0.5)){
+  moving = true;
+  await wait(1500);
+  moving = false;
+  if (MAP[y][x]==stagedata.tiles.battle){
+    if (chance(0.45)){
       flag = "normal"
       await start_Battle();
     }
-  }else if (MAP[y][x]==stagedata[stage].tiles.heal){
+  }else if (MAP[y][x]==stagedata.tiles.heal){
     await full_heal();
-  }else if (MAP[y][x]==stagedata[stage].tiles.boss){
+  }else if (MAP[y][x]==stagedata.tiles.boss){
     flag = "boss"
     await start_Boss();
   }
-  render();
 }
+render();
+
 
 async function full_heal(){
   player.hp=player.maxhp;
@@ -108,9 +114,6 @@ function Create_enemy(){
 // 戦闘
 // ========================================
 function Attack(attacker,defender){
-  if(chance(defender.evade || 0)){
-    return "miss";
-  }
   let damage;
   damage = Math.max(1,attacker.attack-(defender.defense||0)+(attacker.force||0))
   damage = Math.min(damage, defender.hp);
@@ -122,20 +125,8 @@ function Attack(attacker,defender){
 async function p_attack(){
   if(player.hp <= 0){
     set_Message("もうたおれている！");
-    return;}
-  if (turn !== "player"){return}
-  if (player.status=="freeze"){
-    player.status="";
-    set_Message("凍っていて動けない！");
-    turn = "enemy";
-    await wait(1000);
-    e_attack();
-    return;
-  }else if (player.status=="burn"){
-    player.hp -= 2;
-    set_Message(player.name+"はやけどで2ダメージ！");
-    await wait(1000);
-  }
+    return};
+  if (turn !== "player"){return};
   let d = Attack(player,enemy);
   turn = "enemy"
   set_Message(player.name + "のこうげき！");
@@ -165,20 +156,6 @@ async function e_attack(){
   set_Message(enemy.name + "のこうげき！");
   await wait(1000);
   await coment(d,turn);
-  await wait(1000);
-  if (enemy.skill=="freeze"){
-    if (chance(0.2)){
-      player.status="freeze";
-      set_Message(player.name+"は凍ってしまった!");
-      await wait(1000);
-    }
-  }else if (enemy.skill=="burn"){
-    if (chance(0.2)){
-      player.status="burn";
-      set_Message(player.name+"はやけどしてしまった!");
-      await wait(1000);
-    }
-  }
 }
 
 async function coment(amount,turn){
@@ -200,19 +177,8 @@ async function coment(amount,turn){
       message="";
       }else{
         await wait(1000);
-        if (stage!=3){
-          stage++;
-          MAP = structuredClone(stagedata[stage].MAP);
-          enemyMaster = structuredClone(stagedata[stage].enemies);
-          boss = structuredClone(stagedata[stage].boss);
-          x = 0;
-          y = 0;
-          set_Message("次のステージに進む！");
-          await wait(1000);
-          change_scene("map");
-        }else{
         change_scene("ending");
-        }
+        
       }
     }
     }else if (turn == "player"){
@@ -229,22 +195,10 @@ async function coment(amount,turn){
 // ========================================
 // 魔法
 // ========================================
-magic_list=[{name:"fire",mp:3,attack:8},{name:"thunder",mp:4,attack:10}];
+let magic_list=[{name:"fire",mp:3,attack:8},{name:"thunder",mp:4,attack:10}];
 
 async function p_magic(a){
   change_scene("battle")
-  if (player.status=="freeze"){
-    player.status="";
-    set_Message("凍っていて動けない！");
-    turn = "enemy";
-    await wait(1000);
-    e_attack();
-    return;
-  }else if (player.status=="burn"){
-    player.hp -= 2;
-    set_Message(player.name+"はやけどで2ダメージ！");
-    await wait(1000);
-  }
   const magic = magic_list.find(item => item.name === a);
   if (turn !== "player"){return};
   if (player.mp < magic.mp){
@@ -273,18 +227,6 @@ async function p_magic(a){
 
 async function heal(){
   change_scene("battle");
-  if (player.status=="freeze"){
-    player.status="";
-    set_Message("凍っていて動けない！");
-    turn = "enemy";
-    await wait(1000);
-    e_attack();
-    return;
-  }else if (player.status=="burn"){
-    player.hp -= 2;
-    set_Message(player.name+"はやけどで2ダメージ！");
-    await wait(1000);
-  }
   if (turn !== "player"){return};
   if (player.mp < 2){
     set_Message("MPがたりない！");
@@ -345,11 +287,6 @@ async function use_item(item_name){
     set_Message("そのアイテムはありません");
     return;
   }
-  if (player.status=="burn"){
-    player.hp -= 2;
-    set_Message(player.name+"はやけどで2ダメージ！");
-    await wait(1000);
-  }
   inventry[item_name]--;
   if (item.heal){
     player.hp = Math.min(player.maxhp,player.hp + item.heal);
@@ -371,9 +308,6 @@ async function drop_item(){
   }else if (chance(0.4)){
     inventry.ether++;
     set_Message("エーテルをてにいれた")
-  }else if (chance(0.5)){
-    inventry.hipotion++;
-    set_Message("ハイポーションをてにいれた")
   }
   await wait(1000);
 }
@@ -395,11 +329,6 @@ function equip_army(army_name){
     player.defense -= pre_army.defense;
     player.defense += army.defense;
     equipment.armor = army_name;
-  }
-  if (army.evade){
-    const pre_army = army_list.find(item => item.name ===equipment.armor);
-    player.evade -= pre_army.evade || 0;
-    player.evade += army.evade || 0;
   }
   render();
 }
