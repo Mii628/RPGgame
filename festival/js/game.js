@@ -19,13 +19,13 @@ function start_Game(){
   if (name !== ""){
     player.name = name
   }
+  startTime = Date.now();
   change_scene("map")
   message="";
 }
 
 function reset_Game(){
-  player = {name:"勇者",hp:30,maxhp:30,mp:5,maxmp:5,attack:5,level:1,exp:0,defense:0,force:0,gold:0};
-  stage = 1;
+  player = {name:"勇者",hp:30,maxhp:30,mp:5,maxmp:5,attack:5,level:1,exp:0,defense:0,force:0,gold:0,defeatedEnemies:0};
   enemyMaster = structuredClone(stagedata.enemies);
   boss = structuredClone(stagedata.boss);
   turn = "player";
@@ -66,7 +66,7 @@ async function move(muki){
   await wait(1500);
   moving = false;
   if (MAP[y][x]==stagedata.tiles.battle){
-    if (chance(0.45)){
+    if (chance(0.5)){
       flag = "normal"
       await start_Battle();
     }
@@ -96,9 +96,11 @@ function start_Battle(){
   change_scene("battle");
 }
 
-function start_Boss(){
+async function start_Boss(){
   turn = "player";
   enemy = boss;
+  change_scene("warning");
+  await wait(2000);
   change_scene("battle");
   set_Message(boss.name+"があらわれた！");
 }
@@ -143,7 +145,7 @@ async function p_attack(){
   if (enemy.hp > 0){
     await e_attack()
   }else{
-    await wait(1000);
+    player.defeatedEnemies++;
     if (flag == "normal"){
       change_scene("map");}
   }
@@ -164,9 +166,9 @@ async function coment(amount,turn){
   if (turn == "enemy"){
     if (enemy.hp > 0){
       set_Message(enemy.name + "はまだいきている！");
+      await wait(1000);
     }else{
       set_Message(enemy.name + "をたおした！");
-      player.status="";
       if (flag =="normal"){
       await wait(1000);
       await drop_item();
@@ -174,20 +176,30 @@ async function coment(amount,turn){
       await get_exp();
       await wait (1000);
       await get_gold();
-      message="";
+      await wait(1000);
+      set_Message("");
       }else{
         await wait(1000);
+        set_Message("ボスをたおした！");
+        await wait(1000);
+        set_Message("ゲームクリア！");
+        await wait(1000);
+        set_Message("");
         change_scene("ending");
-        
       }
     }
     }else if (turn == "player"){
     if (player.hp > 0){
       set_Message(player.name + "はまだいきている！");
+      await wait(1000);
+      set_Message("");
     }else{
       set_Message(player.name + "はやられた！");
       await wait(1000);
-      reset_Game();
+      set_Message("ゲームオーバー");
+      await wait(1000);
+      set_Message("");
+      change_scene("gameover");
     }
   }
 }
@@ -369,4 +381,15 @@ function set_Message(text){
   if (msg){
     msg.innerText = text;
   }
+}
+
+// ========================================
+// 時間計測
+// ========================================
+function getPlayTime() {
+  const currentTime = Date.now();
+  const elapsedTime = currentTime - startTime;
+  const seconds = Math.floor(elapsedTime / 1000) % 60;
+  const minutes = Math.floor(elapsedTime / (1000 * 60)) % 60;
+  return `${minutes}分 ${seconds}秒`;
 }

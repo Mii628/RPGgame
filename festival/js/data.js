@@ -1,5 +1,5 @@
 let player = {name:"勇者",hp:30,maxhp:30,mp:5,maxmp:5,attack:5,exp:0,level:1,defense:0,force:0,gold:0,
-  status:""};
+  defeatedEnemies:0};
 const items = [{name:"potion",heal:10},{name:"ether",mp:10}];
 const army_list =[{name:"素手",force:0,category:"starter"},{name:"布きれ",defense:0,category:"starter"},{name:"革のふく",defense:2,gold:10,category:"armor"},{name:"木のぼう",force:2,gold:10,category:"weapon"}]
 const inventry = {potion:0,ether:0};
@@ -9,12 +9,13 @@ let enemy = null;
 let turn = "player";
 let message ="";
 let flag ="";
+let startTime = 0;
 
 const stagedata={
     "MAP":[["自宅","森","森"],["森","森","森"],["森","森","ボス"]],
-    "enemies":[{name:"スライム",hp:12,attack:2,exp:2,gold:3,image:slime_Icon},
-               {name:"オオカミ",hp:18,attack:4,exp:3,gold:5,image:wolf_Icon}],
-    "boss":{name:"ドラゴン",hp:60,attack:8,exp:8,gold:20,image:dragon_Icon},
+    "enemies":[{name:"スライム",hp:8,attack:2,exp:2,gold:2,image:slime_Icon},
+               {name:"オオカミ",hp:15,attack:4,exp:3,gold:4,image:wolf_Icon}],
+    "boss":{name:"ドラゴン",hp:30,attack:6,exp:8,gold:20,image:dragon_Icon},
     "tiles":{heal:"自宅",battle:"森",boss:"ボス"},
     "Icon":{heal:house_Icon,battle:forest_Icon,boss:dragon_Icon},
     "Img":{heal:houseImg,battle:forestImg,boss:dragonImg}

@@ -1,14 +1,15 @@
 let scene = "start";
 let sceneHistory = [];
-let stage=1;
 let slashEffect=false;
 let x = 0;
 let y = 0;
 let drawPlayerX = 0;
 let drawPlayerY = 0;
+let moving = false;
 
 function render(){
   const menu = document.getElementById("menu");
+  const msg = document.getElementById("msg");
   if (scene == "start"){
     menu.innerHTML = `名前を入力：<input id="nameInput">
       <button onclick="start_Game()">決定</button>`;
@@ -19,7 +20,8 @@ function render(){
   <div class="enemy">${enemy.image}</div>
   ${slashEffect ? '<div class="slash"></div>' : ''}
   </div>`;
-  menu.innerHTML = `<div id="msg">${message}</div>
+  menu.innerHTML = `
+  <div id="msg">${message}</div>
   <div class="enemy">${enemy.name}</div>
   ${enemyimage}
   <div>${enemy.name}   HP : ${enemy.hp}</div>
@@ -30,9 +32,7 @@ function render(){
  <button onclick="p_attack()">たたかう</button>
  <button onclick="change_scene('mahou')">まほう</button>
  <button onclick="change_scene('item')">アイテム</button>
- <button onclick="change_scene('menu')">メニュー</button>
- <button onclick="back()">にげる</button>
- <button onclick="reset_Game()">タイトルにもどる</button>`
+ <button onclick="back()">にげる</button>`
   }else if (scene == "mahou"){
       let magicButtons = `
       <button onclick="p_magic('fire')">ファイア  MP3</button>
@@ -55,7 +55,8 @@ function render(){
     <button onclick="back()">もどる</button>`;
   }else if (scene == "map"){
     menu.innerHTML = `
-    <canvas id="game" width="1250" height="400"></canvas>
+    <h1>マップ</h1>
+    <canvas id="game" width="1250" height="300"></canvas>
     <div id="msg">${message}</div>
     <div>現在地：${MAP[y][x]}</div>
     <div class="move-buttons">
@@ -68,6 +69,7 @@ function render(){
     <div class="move-buttons">
     <button onclick="move('down')">↓下</button>
     </div>
+    <br>
     <button onclick="change_scene('menu')">メニュー</button>
     <button onclick="change_scene('bukiya')">武器屋</button>
     <button onclick="reset_Game()">タイトルにもどる</button>`; 
@@ -89,7 +91,7 @@ function render(){
     menu.innerHTML =`<h2>メニュー</h2>
     <button onclick="change_scene('status')">ステータス</button>
     <button onclick="change_scene('equipment')">装備</button>
-    <button onclick="back()">もどる</button>`
+    <button onclick="back()">もどる</button>`;
   }else if (scene == "status"){
     menu.innerHTML =`<h3>名前：${player.name}</h3>
     <div>HP : ${player.hp} / ${player.maxhp}</div>
@@ -143,11 +145,25 @@ function render(){
     <button onclick="change_scene('menu')">メニュー</button>
     <button onclick="back()">もどる</button>
   `;
+  }else if (scene == "warning"){
+    menu.innerHTML =`<div class="warning">⚠ WARNING ⚠</div>`
   }else if (scene == "ending"){
-    menu.innerHTML=`<h1>THE END</h1>
+    menu.innerHTML=`<div class="ending">GAME CLEAR!!</div>
     <p>世界に平和がもどった！</p>
+    <div>到達レベル : ${player.level}</div>
+    <div>倒した敵の数 : ${player.defeatedEnemies}</div>
+    <div>プレイ時間 : ${getPlayTime()}</div>
+    <br>
     <button onclick="reset_Game()">タイトルへ</button>
-  `
+  `}else if (scene == "gameover"){
+    menu.innerHTML=`<div class="ending">GAME OVER</div>
+    <p>あなたは死んでしまった...</p>
+    <div>到達レベル : ${player.level}</div>
+    <div>倒した敵の数 : ${player.defeatedEnemies}</div>
+    <div>プレイ時間 : ${getPlayTime()}</div>
+    <br>
+    <button onclick="reset_Game()">タイトルへ</button>
+  `;
   }else if (scene == "equipment"){
 
   let weaponButtons = ownequipment
@@ -196,6 +212,10 @@ function change_scene(nextscene){
 }
 
 function back(){
+  if(flag == "boss"){
+    set_Message("ボス戦からは逃げられない！");
+    return;
+  }
   scene = sceneHistory.pop();
   player.status = "";
   message="";
@@ -256,11 +276,9 @@ function drawMap(){
 }
 
 function gameLoop(){
-
     if(scene === "map"){
         drawMap();
     }
-
     requestAnimationFrame(gameLoop);
 }
 
