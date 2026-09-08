@@ -9,7 +9,6 @@ let moving = false;
 
 function render(){
   const menu = document.getElementById("menu");
-  const msg = document.getElementById("msg");
   if (scene == "start"){
     menu.innerHTML = `名前を入力：<input id="nameInput">
       <button onclick="start_Game()">決定</button>`;
@@ -77,8 +76,7 @@ function render(){
     drawMap();
   }else if (scene == "item"){
     let itemButtons=`<button onclick="use_item('potion')">ポーション：${inventry.potion}</button>
-    <button onclick="use_item('ether')">エーテル：${inventry.ether}</button>
-    <button onclick="use_item('hipotion')">ハイポーション：${inventry.hipotion}</button>`
+    <button onclick="use_item('ether')">エーテル：${inventry.ether}</button>`
     menu.innerHTML =`<div id="msg">${message}</div>
     <div class="enemy">${enemy.name}</div>
     <div>${enemy.name}　 HP: ${enemy.hp}</div>
@@ -142,8 +140,11 @@ function render(){
     <h4>防具</h4>
     ${armorButtons}
     </div>
+    <div>
     <button onclick="change_scene('menu')">メニュー</button>
     <button onclick="back()">もどる</button>
+    </div>
+    </div>
   `;
   }else if (scene == "warning"){
     menu.innerHTML =`<div class="warning">⚠ WARNING ⚠</div>`
@@ -212,10 +213,6 @@ function change_scene(nextscene){
 }
 
 function back(){
-  if(flag == "boss"){
-    set_Message("ボス戦からは逃げられない！");
-    return;
-  }
   scene = sceneHistory.pop();
   player.status = "";
   message="";
@@ -246,7 +243,6 @@ function drawMap(){
         else if (MAP[row][col] === stagedata.tiles.boss) {
             ctx.drawImage(stagedata.Img.boss,drawX,drawY,TILE_SIZE,TILE_SIZE);
         }
-        ctx.strokeRect(drawX, drawY, TILE_SIZE, TILE_SIZE);
         }
     }
     // プレイヤー

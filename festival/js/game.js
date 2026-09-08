@@ -102,6 +102,8 @@ async function start_Boss(){
   change_scene("warning");
   await wait(2000);
   change_scene("battle");
+  sceneHistory = [];
+  sceneHistory.push("map");
   set_Message(boss.name+"があらわれた！");
 }
 

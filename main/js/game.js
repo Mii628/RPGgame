@@ -19,12 +19,13 @@ function start_Game(){
   if (name !== ""){
     player.name = name
   }
+  startTime = Date.now();
   change_scene("map")
   message="";
 }
 
 function reset_Game(){
-  player = {name:"勇者",hp:30,maxhp:30,mp:5,maxmp:5,attack:5,level:1,exp:0,defense:0,force:0,gold:0,status:""};
+  player = {name:"勇者",hp:30,maxhp:30,mp:5,maxmp:5,attack:5,level:1,exp:0,defense:0,force:0,gold:0,status:"",defeatedEnemies:0};
   stage = 1;
   enemyMaster = structuredClone(stagedata[stage].enemies);
   boss = structuredClone(stagedata[stage].boss);
@@ -42,7 +43,7 @@ function reset_Game(){
 // ========================================
 async function move(muki){
   if (muki=='right'){
-    if (x<4){
+    if (x<2){
       x++;
     }else{return}
   }
@@ -56,10 +57,13 @@ async function move(muki){
       y-=1;
     }else{return}
   }else if (muki=="down"){
-    if (y<4){
+    if (y<2){
       y++;
     }else{return}
   }
+  moving = true;
+  await wait(1500);
+  moving = false;
   if (MAP[y][x]==stagedata[stage].tiles.battle){
     if (chance(0.5)){
       flag = "normal"
@@ -90,10 +94,14 @@ function start_Battle(){
   change_scene("battle");
 }
 
-function start_Boss(){
+async function start_Boss(){
   turn = "player";
   enemy = boss;
+  change_scene("warning");
+  await wait(2000);
   change_scene("battle");
+  sceneHistory = [];
+  sceneHistory.push("map");
   set_Message(boss.name+"があらわれた！");
 }
 
@@ -190,7 +198,6 @@ async function coment(amount,turn){
     }else{
       set_Message(enemy.name + "をたおした！");
       player.status="";
-      if (flag =="normal"){
       await wait(1000);
       await drop_item();
       await wait(1000);
@@ -198,7 +205,7 @@ async function coment(amount,turn){
       await wait (1000);
       await get_gold();
       message="";
-      }else{
+      if (flag =="boss"){
         await wait(1000);
         if (stage!=3){
           stage++;
@@ -207,6 +214,8 @@ async function coment(amount,turn){
           boss = structuredClone(stagedata[stage].boss);
           x = 0;
           y = 0;
+          player.hp = player.maxhp;
+          player.mp = player.maxmp;
           set_Message("次のステージに進む！");
           await wait(1000);
           change_scene("map");
@@ -329,6 +338,9 @@ async function level_up(){
     player.defense += 1;
 }
   add_army(player.level);
+  if (player.exp>=nextExp()){
+    await level_up();
+  }
 }
 
 async function get_gold(){
@@ -440,4 +452,15 @@ function set_Message(text){
   if (msg){
     msg.innerText = text;
   }
+}
+
+// ========================================
+// 時間計測
+// ========================================
+function getPlayTime() {
+  const currentTime = Date.now();
+  const elapsedTime = currentTime - startTime;
+  const seconds = Math.floor(elapsedTime / 1000) % 60;
+  const minutes = Math.floor(elapsedTime / (1000 * 60)) % 60;
+  return `${minutes}分 ${seconds}秒`;
 }

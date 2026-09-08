@@ -4,6 +4,9 @@ let stage=1;
 let slashEffect=false;
 let x = 0;
 let y = 0;
+let drawPlayerX = 0;
+let drawPlayerY = 0;
+let moving = false;
 
 function render(){
   const menu = document.getElementById("menu");
@@ -28,9 +31,7 @@ function render(){
  <button onclick="p_attack()">たたかう</button>
  <button onclick="change_scene('mahou')">まほう</button>
  <button onclick="change_scene('item')">アイテム</button>
- <button onclick="change_scene('menu')">メニュー</button>
- <button onclick="back()">にげる</button>
- <button onclick="reset_Game()">タイトルにもどる</button>`
+ <button onclick="back()">にげる</button>`
   }else if (scene == "mahou"){
       let magicButtons = `
       <button onclick="p_magic('fire')">ファイア  MP3</button>
@@ -61,8 +62,8 @@ function render(){
     <button onclick="move('up')">↑上</button>
     </div>
     <div class="move-buttons">
-    <button onclick="move('left')">← 左</button>
-    <button onclick="move('right')">右 →</button>
+    <button onclick="move('left')">←左</button>
+    <button onclick="move('right')">右→</button>
     </div>
     <div class="move-buttons">
     <button onclick="move('down')">↓下</button>
@@ -142,11 +143,27 @@ function render(){
     <button onclick="change_scene('menu')">メニュー</button>
     <button onclick="back()">もどる</button>
   `;
-  }else if (scene == "ending"){
-    menu.innerHTML=`<h1>THE END</h1>
+  }else if (scene == "warning"){
+    menu.innerHTML =`<div class="warning">⚠ WARNING ⚠</div>`
+  }
+  else if (scene == "ending"){
+    menu.innerHTML=`<div class="ending">THE END</div>
     <p>世界に平和がもどった！</p>
+    <div>到達レベル : ${player.level}</div>
+    <div>倒した敵の数 : ${player.defeatedEnemies}</div>
+    <div>プレイ時間 : ${getPlayTime()}</div>
+    <br>
     <button onclick="reset_Game()">タイトルへ</button>
   `
+  }else if (scene == "gameover"){
+    menu.innerHTML=`<div class="ending">GAME OVER</div>
+    <p>あなたは死んでしまった...</p>
+    <div>到達レベル : ${player.level}</div>
+    <div>倒した敵の数 : ${player.defeatedEnemies}</div>
+    <div>プレイ時間 : ${getPlayTime()}</div>
+    <br>
+    <button onclick="reset_Game()">タイトルへ</button>
+  `;
   }else if (scene == "equipment"){
 
   let weaponButtons = ownequipment
@@ -215,7 +232,6 @@ function drawMap(){
       for (let col = 0; col < MAP[row].length; col++) {
         const drawX = offsetX + col * TILE_SIZE;
         const drawY = offsetY + row * TILE_SIZE;
-
         if (MAP[row][col] === stagedata[stage].tiles.heal) {
             ctx.drawImage(stagedata[stage].Img.heal,drawX,drawY,TILE_SIZE,TILE_SIZE);
         }
@@ -225,22 +241,39 @@ function drawMap(){
         else if (MAP[row][col] === stagedata[stage].tiles.boss) {
             ctx.drawImage(stagedata[stage].Img.boss,drawX,drawY,TILE_SIZE,TILE_SIZE);
         }
-        else {
-            ctx.fillStyle = "lightgray";
-        }
-        ctx.strokeRect(drawX, drawY, TILE_SIZE, TILE_SIZE);
     }
   }
     // プレイヤー
+    let targetX = offsetX + x * TILE_SIZE + TILE_SIZE / 2;
+    let targetY = offsetY + y * TILE_SIZE + TILE_SIZE / 2 + 25;
+    if (drawPlayerX === 0 && drawPlayerY === 0) {
+    drawPlayerX = targetX;
+    drawPlayerY = targetY;
+    }
+    
     const HERO_SIZE = 40;
+    drawPlayerX += (targetX - drawPlayerX) * 0.05;
+    drawPlayerY += (targetY - drawPlayerY) * 0.05;
     ctx.beginPath();
     ctx.arc(
-    offsetX + x * TILE_SIZE + TILE_SIZE / 2,
-    offsetY + y * TILE_SIZE + TILE_SIZE / 2 + 25,
+    drawPlayerX,
+    drawPlayerY,
     HERO_SIZE / 2 - 8,
     0,
     Math.PI * 2
   );
     ctx.fillStyle = "cyan";
     ctx.fill();
+    if (Math.abs(drawPlayerX - targetX) < 1 && Math.abs(drawPlayerY - targetY) < 1) {
+        drawPlayerX = targetX;
+        drawPlayerY = targetY;
+    }
 }
+
+function gameLoop(){
+    if(scene === "map"){
+        drawMap();
+    }
+    requestAnimationFrame(gameLoop);
+}
+gameLoop();
