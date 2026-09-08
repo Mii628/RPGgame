@@ -13,6 +13,8 @@ function chance(rate){
 let MAP = [];
 function start_Game(){
   let name = document.getElementById("nameInput").value;
+  let job = document.getElementById("jobSelect").value;
+  player = structuredClone(playerdata[job]);
   MAP = structuredClone(stagedata[stage].MAP);
   enemyMaster = structuredClone(stagedata[stage].enemies);
   boss = structuredClone(stagedata[stage].boss);
@@ -190,7 +192,11 @@ async function e_attack(){
 }
 
 async function coment(amount,turn){
-  set_Message(amount + "ダメージ！");
+  if (amount == "miss"){
+    set_Message(turn === "player"? player.name + "は素早くよけた！": enemy.name + "は素早くよけた！");
+  }else{
+    set_Message(amount + "ダメージ！");
+  }
   await wait(1000);
   if (turn == "enemy"){
     if (enemy.hp > 0){
@@ -238,7 +244,7 @@ async function coment(amount,turn){
 // ========================================
 // 魔法
 // ========================================
-let magic_list=[{name:"fire",mp:3,attack:8},{name:"thunder",mp:4,attack:10}];
+let magic_list=[{name:"fire",mp:3,attack:12},{name:"thunder",mp:4,attack:18}];
 
 async function p_magic(a){
   change_scene("battle")
@@ -359,7 +365,7 @@ async function use_item(item_name){
   }
   if (player.status=="burn"){
     player.hp -= 2;
-    set_Message(player.name+"はやけどで2ダメージ！");
+    set_Message(player.name+"はやけどで2ダメージ!");
     await wait(1000);
   }
   inventry[item_name]--;

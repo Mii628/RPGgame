@@ -13,9 +13,9 @@ let startTime = 0;
 
 const stagedata={
     "MAP":[["自宅","森","森"],["森","森","森"],["森","森","ボス"]],
-    "enemies":[{name:"スライム",hp:8,attack:2,exp:2,gold:2,image:slime_Icon},
-               {name:"オオカミ",hp:15,attack:4,exp:3,gold:4,image:wolf_Icon}],
-    "boss":{name:"ドラゴン",hp:30,attack:6,exp:8,gold:20,image:dragon_Icon},
+    "enemies":[{name:"スライム",hp:7,attack:1,exp:2,gold:2,image:slime_Icon},
+               {name:"オオカミ",hp:12,attack:3,exp:3,gold:4,image:wolf_Icon}],
+    "boss":{name:"ドラゴン",hp:28,attack:5,exp:8,gold:20,image:dragon_Icon},
     "tiles":{heal:"自宅",battle:"森",boss:"ボス"},
     "Icon":{heal:house_Icon,battle:forest_Icon,boss:dragon_Icon},
     "Img":{heal:houseImg,battle:forestImg,boss:dragonImg}

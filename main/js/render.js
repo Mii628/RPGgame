@@ -11,10 +11,66 @@ let moving = false;
 function render(){
   const menu = document.getElementById("menu");
   if (scene == "start"){
-    menu.innerHTML = `名前を入力：<input id="nameInput">
-      <button onclick="start_Game()">決定</button>`;
+    menu.innerHTML = `
+<div class="start-screen">
+
+    <div class="start-title">名前を入力</div>
+
+    <input id="nameInput" type="text" placeholder="勇者">
+
+    <br><br>
+
+    <div class="start-title">職業を選択</div>
+
+    <select id="jobSelect">
+        <option value="warrior">⚔️ 戦士</option>
+        <option value="mage">🔮 魔法使い</option>
+        <option value="thief">🗡️ 盗賊</option>
+    </select>
+
+    <br><br>
+
+    <button onclick="start_Game()">
+        ゲーム開始
+    </button>
+
+    <br><br>
+
+    <h3>職業の特徴</h3>
+
+    <div class="job-info">
+
+        <div class="job-card">
+            <h4>⚔️ 戦士</h4>
+            HP ★★★★★<br>
+            攻撃 ★★★★☆<br>
+            魔法 ★☆☆☆☆<br>
+            回避 ★★☆☆☆
+        </div>
+
+        <div class="job-card">
+            <h4>🔮 魔法使い</h4>
+            HP ★★☆☆☆<br>
+            攻撃 ★★☆☆☆<br>
+            魔法 ★★★★★<br>
+            回避 ★★☆☆☆
+        </div>
+
+        <div class="job-card">
+            <h4>🗡️ 盗賊</h4>
+            HP ★★★☆☆<br>
+            攻撃 ★★★☆☆<br>
+            魔法 ★★☆☆☆<br>
+            回避 ★★★★★
+        </div>
+
+    </div>
+
+</div>
+`;
   }else if (scene == "battle"){
     let hpPercent= player.hp/player.maxhp*100;
+    let enemyhpPercent= enemy.hp/enemy.maxhp*100;
     let enemyimage = `
     <div class="enemy-area">
   <div class="enemy">${enemy.image}</div>
@@ -22,8 +78,9 @@ function render(){
   </div>`;
   menu.innerHTML = `<div id="msg">${message}</div>
   <div class="enemy">${enemy.name}</div>
+  <div class="enemy">HP : ${enemy.hp}</div>
+  <div class="enemyhp-bar"><div class="enemyhp-fill" style="width:${enemyhpPercent}%"></div></div>
   ${enemyimage}
-  <div>${enemy.name}   HP : ${enemy.hp}</div>
   <div>${player.name}　HP : ${player.hp}</div>
   <div class="hp-bar"><div class="hp-fill" style="width:${hpPercent}%"></div></div>
   <div>MP : ${player.mp}
@@ -54,10 +111,10 @@ function render(){
     <button onclick="back()">もどる</button>`;
   }else if (scene == "map"){
     menu.innerHTML = `
+    <h1>ステージ${stage}</h1>
     <canvas id="game" width="1250" height="400"></canvas>
     <div id="msg">${message}</div>
     <div>現在地：${MAP[y][x]}</div>
-    <div>座標　：${y},${x}</div>
     <div class="move-buttons">
     <button onclick="move('up')">↑上</button>
     </div>
@@ -134,11 +191,11 @@ function render(){
     <div class="shop-container">
     <div>
     <h4>武器</h4>
-    ${weaponButtons}
+      ${weaponButtons}
     </div>
     <div>
     <h4>防具</h4>
-    ${armorButtons}
+      ${armorButtons}
     </div>
     <button onclick="change_scene('menu')">メニュー</button>
     <button onclick="back()">もどる</button>

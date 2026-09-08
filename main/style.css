@@ -5,6 +5,23 @@ body {
   font-size: 20px;
 }
 
+#nameInput{
+    font-size: 32px;
+    padding: 8px;
+    width: 300px;
+}
+
+#jobSelect{
+    font-size: 28px;
+    padding: 8px;
+}
+
+.start-screen button{
+    font-size: 40px;
+    padding: 20px 40px;
+}
+
+
 .battle {
   width: 350px;
   margin: 50px auto;
@@ -30,17 +47,13 @@ body {
   margin:20px 0;
 }
 
-button {
-  background: #4b5563;
-    color: white;
-    border: none;
-    border-radius: 12px;
-    padding: 10px 20px;
-    margin: 6px;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.2s;
+button{
+  background:white;
+  color:black;
+  border:3px solid black;
+  font-size:28px;
+  padding:8px 20px;
+  margin:10px;
 }
 
 .move-buttons{
@@ -70,6 +83,19 @@ border:1px solid black;
 width:100%;
 height:100%;
 background:limegreen;
+}
+
+.enemyhp-bar{
+  width:200px;
+  height:10px;
+  border:1px solid black;
+  margin: 0 auto;
+}
+
+.enemyhp-fill{
+  width:100%;
+  height:100%;
+  background:red;
 }
 
 .current{
@@ -106,4 +132,19 @@ border-radius: 8px;
   margin: 20px 0;
   font-size: 50px;
   color:red;
+}
+
+.job-info{
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 20px;
+}
+
+.job-card{
+    padding: 15px;
+    border: 2px solid #555;
+    border-radius: 12px;
+    background: white;
+    min-width: 200px;
 }
