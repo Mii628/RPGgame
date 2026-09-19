@@ -21,7 +21,6 @@ body {
     padding: 20px 40px;
 }
 
-
 .battle {
   width: 350px;
   margin: 50px auto;
@@ -75,8 +74,8 @@ button{
 
 .hp-bar{
   width:200px;
-height:10px;
-border:1px solid black;
+  height:10px;
+  border:1px solid black;
 }
 
 .hp-fill{

@@ -98,7 +98,7 @@ function start_Battle(){
 
 async function start_Boss(){
   turn = "player";
-  enemy = boss;
+  enemy = structuredClone(boss);
   change_scene("warning");
   await wait(2000);
   change_scene("battle");
@@ -130,9 +130,12 @@ function Attack(attacker,defender){
 }
 
 async function p_attack(){
+  if(enemy.hp <= 0){
+    return;
+  }
   if(player.hp <= 0){
-    set_Message("もうたおれている！");
-    return;}
+    return;
+  }
   if (turn !== "player"){return}
   if (player.status=="freeze"){
     player.status="";
@@ -210,7 +213,7 @@ async function coment(amount,turn){
       await get_exp();
       await wait (1000);
       await get_gold();
-      message="";
+      player.defeatedEnemies++;
       if (flag =="boss"){
         await wait(1000);
         if (stage!=3){
@@ -236,7 +239,10 @@ async function coment(amount,turn){
     }else{
       set_Message(player.name + "はやられた！");
       await wait(1000);
-      reset_Game();
+      set_Message("ゲームオーバー");
+      await wait(1000);
+      set_Message("");
+      change_scene("gameover");
     }
   }
 }
@@ -248,6 +254,9 @@ let magic_list=[{name:"fire",mp:3,attack:12},{name:"thunder",mp:4,attack:18}];
 
 async function p_magic(a){
   change_scene("battle")
+  if(enemy.hp <= 0){
+    return;
+  }
   if (player.status=="freeze"){
     player.status="";
     set_Message("凍っていて動けない！");
@@ -337,9 +346,26 @@ async function level_up(){
   set_Message(player.name +"はレベル"+player.level+"になった!!");
   player.maxhp+=5;
   player.hp+=5;
-  player.maxmp+=2;
-  player.mp+=2;
-  player.attack+=1;
+  if (player.job == "warrior"){
+    player.attack+=1;
+  }
+  else if (player.job == "mage"){
+    player.maxmp+=1;
+    player.mp+=1;
+    if (player.level % 2 == 0){
+      player.attack+=1;
+    }
+  }
+  else if (player.job == "thief"){
+    player.evade+=0.01;
+    if (player.level % 2 == 0){
+      player.attack+=1;
+    }
+    else{
+      player.maxmp+=1;
+    player.mp+=1;
+    }
+  } 
   if(player.level % 4 == 0){
     player.defense += 1;
 }
@@ -404,14 +430,14 @@ function equip_army(army_name){
   if (!army) return;
   if (army.category=="weapon"){
     const pre_army = army_list.find(item => item.name ===equipment.weapon);
-    player.force -= pre_army.force;
-    player.force += army.force;
+    player.force -= pre_army.force || 0;
+    player.force += army.force || 0;
     equipment.weapon = army_name;
   }
   else if (army.category=="armor"){
     const pre_army = army_list.find(item => item.name ===equipment.armor);
-    player.defense -= pre_army.defense;
-    player.defense += army.defense;
+    player.defense -= pre_army.defense || 0;
+    player.defense += army.defense || 0;
     equipment.armor = army_name;
   }
   if (army.evade){

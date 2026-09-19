@@ -1,10 +1,10 @@
 let playerdata = {
-  warrior:{name:"戦士",hp:30,maxhp:30,mp:5,maxmp:5,attack:5,exp:0,level:1,defense:0,evade:0,force:0,gold:0,
-  status:"",defeatedEnemies:0},
+  warrior:{name:"戦士",hp:30,maxhp:30,mp:3,maxmp:3,attack:5,exp:0,level:1,defense:0,evade:0,force:0,gold:0,
+  status:"",defeatedEnemies:0,job:"warrior"},
   mage:{name:"魔法使い",hp:20,maxhp:20,mp:10,maxmp:10,attack:3,exp:0,level:1,defense:0,evade:0,force:0,gold:0,
-  status:"",defeatedEnemies:0},
-  thief:{name:"盗賊",hp:25,maxhp:25,mp:5,maxmp:5,attack:4,exp:0,level:1,defense:0,evade:0,force:0,gold:0,
-  status:"",defeatedEnemies:0}
+  status:"",defeatedEnemies:0,job:"mage"},
+  thief:{name:"盗賊",hp:25,maxhp:25,mp:6,maxmp:6,attack:4,exp:0,level:1,defense:0,evade:0.1,force:0,gold:0,
+  status:"",defeatedEnemies:0,job:"thief"}
   };
 const items = [{name:"potion",heal:10},{name:"ether",mp:10},{name:"hipotion",heal:15}];
 const army_list =[{name:"素手",force:0,category:"starter"},{name:"布きれ",defense:0,category:"starter"},{name:"革のふく",defense:2,gold:10,category:"armor"},{name:"木のぼう",force:2,gold:10,category:"weapon"}]
@@ -19,9 +19,9 @@ let flag ="";
 const stagedata={
   1:{
     "MAP":[["自宅","森","森"],["森","森","森"],["森","森","ボス"]],
-    "enemies":[{name:"スライム",hp:7,maxhp:7,attack:1,exp:2,gold:2,image:slime_Icon},
-               {name:"オオカミ",hp:12,maxhp:12,attack:3,exp:3,gold:4,image:wolf_Icon}],
-    "boss":{name:"ドラゴン",hp:28,maxhp:28,attack:5,exp:8,gold:20,image:dragon_Icon},
+    "enemies":[{name:"スライム",hp:7,maxhp:7,attack:2,exp:2,gold:2,image:slime_Icon},
+               {name:"オオカミ",hp:14,maxhp:14,attack:4,exp:3,gold:4,image:wolf_Icon}],
+    "boss":{name:"ドラゴン",hp:28,maxhp:28,attack:6,exp:8,gold:10,image:dragon_Icon},
     "tiles":{heal:"自宅",battle:"森",boss:"ボス"},
     "Icon":{heal:house_Icon,battle:forest_Icon,boss:dragon_Icon},
     "Img":{heal:houseImg,battle:forestImg,boss:dragonImg}

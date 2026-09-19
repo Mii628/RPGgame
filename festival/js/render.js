@@ -1,4 +1,4 @@
-let scene = "start";
+let scene = "opening";
 let sceneHistory = [];
 let slashEffect=false;
 let x = 0;
@@ -9,21 +9,84 @@ let moving = false;
 
 function render(){
   const menu = document.getElementById("menu");
-  if (scene == "start"){
-    menu.innerHTML = `名前を入力：<input id="nameInput">
-      <button onclick="start_Game()">決定</button>`;
+  if (scene == "opening"){
+    menu.innerHTML = `
+    <div class="opening">
+    この雪原の冬は終わろうとしている。<br><br>
+    冬を守るアイスドラゴンは、消えゆく冬を繋ぎ止めるため暴走した。<br><br>
+    吹雪の中心へ向かおう。
+    </div>
+    <button onclick="change_scene('start')">次へ</button>
+    `
+  }
+  else if (scene == "start"){
+    menu.innerHTML = `
+<div class="start-screen">
+
+    <div class="start-title">名前を入力</div>
+
+    <input id="nameInput" type="text" placeholder="勇者">
+
+    <br><br>
+
+    <div class="start-title">職業を選択</div>
+
+    <select id="jobSelect">
+        <option value="warrior">⚔️ 戦士</option>
+        <option value="mage">🔮 魔法使い</option>
+        <option value="thief">🗡️ 盗賊</option>
+    </select>
+
+    <br><br>
+
+    <button onclick="start_Game()">
+        ゲーム開始
+    </button>
+
+    <br><br>
+
+    <h3>職業の特徴</h3>
+
+    <div class="job-info">
+        <div class="job-card">
+            <h4>⚔️ 戦士</h4>
+            HP ★★★★★<br>
+            攻撃 ★★★★☆<br>
+            魔法 ★☆☆☆☆<br>
+            回避 ★★☆☆☆
+        </div>
+        <div class="job-card">
+            <h4>🔮 魔法使い</h4>
+            HP ★★☆☆☆<br>
+            攻撃 ★★☆☆☆<br>
+            魔法 ★★★★★<br>
+            回避 ★★☆☆☆
+        </div>
+        <div class="job-card">
+            <h4>🗡️ 盗賊</h4>
+            HP ★★★☆☆<br>
+            攻撃 ★★★☆☆<br>
+            魔法 ★★☆☆☆<br>
+            回避 ★★★★★
+        </div>
+    </div>
+
+</div>
+`;
   }else if (scene == "battle"){
+    let enemyhpPercent=enemy.hp/enemy.maxhp*100;
     let hpPercent= player.hp/player.maxhp*100;
     let enemyimage = `
     <div class="enemy-area">
-  <div class="enemy">${enemy.image}</div>
+  <div class="enemy"><img src='${enemy.image}'</div>
   ${slashEffect ? '<div class="slash"></div>' : ''}
   </div>`;
   menu.innerHTML = `
   <div id="msg">${message}</div>
   <div class="enemy">${enemy.name}</div>
+  <div class="enemy">HP : ${enemy.hp}</div>
+  <div class="enemyhp-bar"><div class="enemyhp-fill" style="width:${enemyhpPercent}%"></div></div>
   ${enemyimage}
-  <div>${enemy.name}   HP : ${enemy.hp}</div>
   <div>${player.name}　HP : ${player.hp}</div>
   <div class="hp-bar"><div class="hp-fill" style="width:${hpPercent}%"></div></div>
   <div>MP : ${player.mp}
@@ -147,10 +210,15 @@ function render(){
     </div>
   `;
   }else if (scene == "warning"){
-    menu.innerHTML =`<div class="warning">⚠ WARNING ⚠</div>`
+    menu.innerHTML =`<div class="warning">⚠ WARNING ⚠<br><br><br>
+    突然、吹雪が勢いを増した！！
+    </div>
+    `
   }else if (scene == "ending"){
-    menu.innerHTML=`<div class="ending">GAME CLEAR!!</div>
-    <p>世界に平和がもどった！</p>
+    menu.innerHTML=`<div class="ending">GAME CLEAR!!<br><br></div>
+    <h3>アイスドラゴンは静かに眠りについた。<br>
+    吹雪はやみ、雪原には穏やかな雪が降り始めた。<br>
+    冬は再び、この地に戻った。</h3>
     <div>到達レベル : ${player.level}</div>
     <div>倒した敵の数 : ${player.defeatedEnemies}</div>
     <div>プレイ時間 : ${getPlayTime()}</div>
@@ -158,7 +226,7 @@ function render(){
     <button onclick="reset_Game()">タイトルへ</button>
   `}else if (scene == "gameover"){
     menu.innerHTML=`<div class="ending">GAME OVER</div>
-    <p>あなたは死んでしまった...</p>
+    <h3>あなたは死んでしまった...</h3>
     <div>到達レベル : ${player.level}</div>
     <div>倒した敵の数 : ${player.defeatedEnemies}</div>
     <div>プレイ時間 : ${getPlayTime()}</div>

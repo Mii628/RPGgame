@@ -127,9 +127,12 @@ function Attack(attacker,defender){
 }
 
 async function p_attack(){
+  if(enemy.hp <= 0){
+    return;
+  }
   if(player.hp <= 0){
-    set_Message("もうたおれている！");
-    return};
+    return
+  };
   if (turn !== "player"){return};
   let d = Attack(player,enemy);
   turn = "enemy"
@@ -147,7 +150,6 @@ async function p_attack(){
   if (enemy.hp > 0){
     await e_attack()
   }else{
-    player.defeatedEnemies++;
     if (flag == "normal"){
       change_scene("map");}
   }
@@ -163,7 +165,11 @@ async function e_attack(){
 }
 
 async function coment(amount,turn){
-  set_Message(amount + "ダメージ！");
+  if (amount == "miss"){
+    set_Message(turn === "player"? player.name + "は素早くよけた！": enemy.name + "は素早くよけた！");
+  }else{
+    set_Message(amount + "ダメージ！");
+  }
   await wait(1000);
   if (turn == "enemy"){
     if (enemy.hp > 0){
@@ -171,6 +177,7 @@ async function coment(amount,turn){
       await wait(1000);
     }else{
       set_Message(enemy.name + "をたおした！");
+      player.defeatedEnemies++;
       if (flag =="normal"){
       await wait(1000);
       await drop_item();
@@ -213,6 +220,9 @@ let magic_list=[{name:"fire",mp:3,attack:12},{name:"thunder",mp:4,attack:18}];
 
 async function p_magic(a){
   change_scene("battle")
+  if(enemy.hp <= 0){
+    return;
+  }
   const magic = magic_list.find(item => item.name === a);
   if (turn !== "player"){return};
   if (player.mp < magic.mp){

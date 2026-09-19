@@ -12,11 +12,11 @@ let flag ="";
 let startTime = 0;
 
 const stagedata={
-    "MAP":[["自宅","森","森"],["森","森","森"],["森","森","ボス"]],
-    "enemies":[{name:"スライム",hp:7,attack:1,exp:2,gold:2,image:slime_Icon},
-               {name:"オオカミ",hp:12,attack:3,exp:3,gold:4,image:wolf_Icon}],
-    "boss":{name:"ドラゴン",hp:28,attack:5,exp:8,gold:20,image:dragon_Icon},
-    "tiles":{heal:"自宅",battle:"森",boss:"ボス"},
-    "Icon":{heal:house_Icon,battle:forest_Icon,boss:dragon_Icon},
-    "Img":{heal:houseImg,battle:forestImg,boss:dragonImg}
+    "MAP":[["山小屋","雪原","雪原"],["雪原","雪原","雪原"],["雪原","雪原","ボス"]],
+    "enemies":[{name:"雪だるま",hp:7,maxhp:7,attack:2,exp:2,gold:2,image:"snowman.jpg"},
+               {name:"雪ねこ",hp:12,maxhp:12,attack:3,exp:3,gold:4,image:"cat.jpg"}],
+    "boss":{name:"アイスドラゴン",hp:30,maxhp:30,attack:5,exp:8,gold:20,image:"dragon.jpg"},
+    "tiles":{heal:"山小屋",battle:"雪原",boss:"ボス"},
+    "Icon":{heal:loghouse_Icon,battle:snowforest_Icon,boss:dragon_Icon},
+    "Img":{heal:loghouseImg,battle:snowforestImg,boss:dragonImg}
 }

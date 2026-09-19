@@ -1,14 +1,39 @@
 body {
-  background: #eeeeee;
+  background: #ffffff;
   color: #222222;
   font-family: monospace; 
   font-size: 20px;
 }
 
+.opening{
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 30px;
+}
+
+#nameInput{
+    font-size: 32px;
+    padding: 8px;
+    width: 300px;
+}
+
+#jobSelect{
+    font-size: 28px;
+    padding: 8px;
+}
+
+.start-screen button{
+    font-size: 40px;
+    padding: 20px 40px;
+}
+
 .battle {
   width: 350px;
   margin: 50px auto;
-  border: 5px solid #222222;
+  border: 3px solid #222222;
   padding: 10px;
   font-size: 20px;
 }
@@ -31,16 +56,12 @@ body {
 }
 
 button{
-    background: #4b5563;
-    color: white;
-    border: none;
-    border-radius: 12px;
-    padding: 10px 20px;
-    margin: 6px;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.2s;
+  background:white;
+  color:black;
+  border:3px solid black;
+  font-size:28px;
+  padding:8px 20px;
+  margin:10px;
 }
 
 .move-buttons{
@@ -62,14 +83,27 @@ button{
 
 .hp-bar{
   width:200px;
-height:10px;
-border:1px solid black;
+  height:10px;
+  border:1px solid black;
 }
 
 .hp-fill{
 width:100%;
 height:100%;
 background:limegreen;
+}
+
+.enemyhp-bar{
+  width:200px;
+  height:10px;
+  border:1px solid black;
+  margin: 0 auto;
+}
+
+.enemyhp-fill{
+  width:100%;
+  height:100%;
+  background:red;
 }
 
 .current{
@@ -105,5 +139,20 @@ border-radius: 8px;
   text-align: center;
   margin: 20px 0;
   font-size: 50px;
-  color:red;
+  color:#4ea5ff;
+}
+
+.job-info{
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 20px;
+}
+
+.job-card{
+    padding: 15px;
+    border: 2px solid #555;
+    border-radius: 12px;
+    background: white;
+    min-width: 200px;
 }

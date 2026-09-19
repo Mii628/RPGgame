@@ -39,31 +39,27 @@ function render(){
     <h3>職業の特徴</h3>
 
     <div class="job-info">
-
         <div class="job-card">
             <h4>⚔️ 戦士</h4>
-            HP ★★★★★<br>
+            体力 ★★★★★<br>
             攻撃 ★★★★☆<br>
             魔法 ★☆☆☆☆<br>
             回避 ★★☆☆☆
         </div>
-
         <div class="job-card">
             <h4>🔮 魔法使い</h4>
-            HP ★★☆☆☆<br>
+            体力 ★★☆☆☆<br>
             攻撃 ★★☆☆☆<br>
             魔法 ★★★★★<br>
             回避 ★★☆☆☆
         </div>
-
         <div class="job-card">
             <h4>🗡️ 盗賊</h4>
-            HP ★★★☆☆<br>
+            体力 ★★★☆☆<br>
             攻撃 ★★★☆☆<br>
             魔法 ★★☆☆☆<br>
             回避 ★★★★★
         </div>
-
     </div>
 
 </div>
