@@ -6,11 +6,11 @@ let y = 0;
 let drawPlayerX = 0;
 let drawPlayerY = 0;
 let moving = false;
-
 function render(){
   const menu = document.getElementById("menu");
   if (scene == "opening"){
     menu.innerHTML = `
+    <div class="background">${snowbg}</div>
     <div class="opening">
     この雪原の冬は終わろうとしている。<br><br>
     冬を守るアイスドラゴンは、消えゆく冬を繋ぎ止めるため暴走した。<br><br>
@@ -21,6 +21,7 @@ function render(){
   }
   else if (scene == "start"){
     menu.innerHTML = `
+    <div class="background">${snowbg}</div>
 <div class="start-screen">
 
     <div class="start-title">名前を入力</div>
@@ -74,6 +75,7 @@ function render(){
 </div>
 `;
   }else if (scene == "battle"){
+
     let enemyhpPercent=enemy.hp/enemy.maxhp*100;
     let hpPercent= player.hp/player.maxhp*100;
     let enemyimage = `
@@ -82,6 +84,7 @@ function render(){
   ${slashEffect ? '<div class="slash"></div>' : ''}
   </div>`;
   menu.innerHTML = `
+  <div class="background">${mtbg}</div>
   <div id="msg">${message}</div>
   <div class="enemy">${enemy.name}</div>
   <div class="enemy">HP : ${enemy.hp}</div>
@@ -96,7 +99,7 @@ function render(){
  <button onclick="change_scene('item')">アイテム</button>
  <button onclick="back()">にげる</button>`
   }else if (scene == "mahou"){
-      let magicButtons = `
+      let magicButtons = `<div class="background">${snowbg}</div>
       <button onclick="p_magic('fire')">ファイア  MP3</button>
       `;
       if(player.level>=2){
@@ -117,7 +120,7 @@ function render(){
     <button onclick="back()">もどる</button>`;
   }else if (scene == "map"){
     menu.innerHTML = `
-    <h1>マップ</h1>
+    <div class="background">${mtbg}</div>
     <canvas id="game" width="1250" height="300"></canvas>
     <div id="msg">${message}</div>
     <div>現在地：${MAP[y][x]}</div>
@@ -134,27 +137,31 @@ function render(){
     <br>
     <button onclick="change_scene('menu')">メニュー</button>
     <button onclick="change_scene('bukiya')">武器屋</button>
+    <button onclick="change_scene('item')">アイテム</button>
     <button onclick="reset_Game()">タイトルにもどる</button>`; 
     
     drawMap();
   }else if (scene == "item"){
     let itemButtons=`<button onclick="use_item('potion')">ポーション：${inventry.potion}</button>
     <button onclick="use_item('ether')">エーテル：${inventry.ether}</button>`
-    menu.innerHTML =`<div id="msg">${message}</div>
-    <div class="enemy">${enemy.name}</div>
-    <div>${enemy.name}　 HP: ${enemy.hp}</div>
+    menu.innerHTML =`<div class="background">${snowbg}</div>
+    <div id="msg">${message}</div>
+    ${enemy ? `<div class="enemy">${enemy.name}</div>
+    <div>${enemy.name} HP: ${enemy.hp}</div>` : ""}
     <div>${player.name}　HP: ${player.hp}
     MP: ${player.mp}</span>
     Lv: ${player.level}</div>
     ${itemButtons}
     <button onclick="back()">もどる</button>`;
   }else if (scene == "menu"){
-    menu.innerHTML =`<h2>メニュー</h2>
+    menu.innerHTML =`<div class="background">${snowbg}</div>
+    <h2>メニュー</h2>
     <button onclick="change_scene('status')">ステータス</button>
     <button onclick="change_scene('equipment')">装備</button>
     <button onclick="back()">もどる</button>`;
   }else if (scene == "status"){
-    menu.innerHTML =`<h3>名前：${player.name}</h3>
+    menu.innerHTML =`<div class="background">${snowbg}</div>
+    <h3>名前：${player.name}</h3>
     <div>HP : ${player.hp} / ${player.maxhp}</div>
     <div>MP : ${player.mp} / ${player.maxmp}</div>
     <div>Lv : ${player.level}</div>
@@ -191,7 +198,7 @@ function render(){
       return `<button onclick="buy('${item.name}')">${item.name} (${item.gold}G)</button>
       `;
     }).join("");
-    menu.innerHTML = `
+    menu.innerHTML = `<div class="background">${snowbg}</div>
     <h3>いまの所持金：${player.gold}G</h3>
     <div id="msg">${message}</div>
     <div class="shop-container">
@@ -210,15 +217,22 @@ function render(){
     </div>
   `;
   }else if (scene == "warning"){
-    menu.innerHTML =`<div class="warning">⚠ WARNING ⚠<br><br><br>
-    突然、吹雪が勢いを増した！！
+    menu.innerHTML =`<div class="warning-title">⚠ WARNING ⚠</div>
+    <div class="warning-text">
+      吹雪の中心に到達した。</div>
+    <div class="warning-boss">
+      ❄ アイスドラゴンが現れた！ ❄
     </div>
     `
   }else if (scene == "ending"){
     menu.innerHTML=`<div class="ending">GAME CLEAR!!<br><br></div>
-    <h3>アイスドラゴンは静かに眠りについた。<br>
-    吹雪はやみ、雪原には穏やかな雪が降り始めた。<br>
-    冬は再び、この地に戻った。</h3>
+    <div class="ending-text">
+      アイスドラゴンは静かに眠りについた。<br><br>
+      吹雪はやみ、雪原には穏やかな雪が降り始めた。<br><br>
+      冬は再び、この地に戻った。
+    </div><br>
+    <div>名前 : ${player.name}</div>
+    <div>職業 : ${player.job}</div>
     <div>到達レベル : ${player.level}</div>
     <div>倒した敵の数 : ${player.defeatedEnemies}</div>
     <div>プレイ時間 : ${getPlayTime()}</div>
@@ -258,6 +272,7 @@ function render(){
     .join("");
 
   menu.innerHTML = `
+  <div class="background">${snowbg}</div>
     <h3>武器</h3>
     <div>装備中の武器: ${equipment.weapon}</div>
     ${weaponButtons || "武器はありません"}
@@ -289,7 +304,11 @@ function back(){
 
 
 function drawMap(){
-    const canvas = document.getElementById("game");
+  const canvas = document.getElementById("game");
+
+  if(!canvas){
+    return;
+  }
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     const TILE_SIZE = 70;
@@ -302,27 +321,34 @@ function drawMap(){
         const drawX = offsetX + col * TILE_SIZE;
         const drawY = offsetY + row * TILE_SIZE;
 
-        if (MAP[row][col] === stagedata.tiles.heal) {
-            ctx.drawImage(stagedata.Img.heal,drawX,drawY,TILE_SIZE,TILE_SIZE);
+        if (MAP[row][col] === stagedata[stage].tiles.heal) {
+          ctx.drawImage(stagedata[stage].Img.heal,drawX,drawY,TILE_SIZE,TILE_SIZE);
         }
-        else if (MAP[row][col] === stagedata.tiles.battle) {
-            ctx.drawImage(stagedata.Img.battle,drawX,drawY,TILE_SIZE,TILE_SIZE);
+        else if (MAP[row][col] === stagedata[stage].tiles.battle) {
+          ctx.drawImage(stagedata[stage].Img.battle,drawX,drawY,TILE_SIZE,TILE_SIZE);
         }
-        else if (MAP[row][col] === stagedata.tiles.boss) {
-            ctx.drawImage(stagedata.Img.boss,drawX,drawY,TILE_SIZE,TILE_SIZE);
+        else if (MAP[row][col] === stagedata[stage].tiles.boss) {
+          ctx.drawImage(stagedata[stage].Img.boss,drawX,drawY,TILE_SIZE,TILE_SIZE);
         }
+        else if (MAP[row][col] === stagedata[stage].tiles.entrance){
+          ctx.drawImage(stagedata[stage].Img.entrance,drawX,drawY,TILE_SIZE,TILE_SIZE);
+        }else if (MAP[row][col] === stagedata[stage].tiles.treasure){
+          ctx.drawImage(stagedata[stage].Img.treasure,drawX,drawY,TILE_SIZE,TILE_SIZE);
         }
     }
+  }
     // プレイヤー
     let targetX = offsetX + x * TILE_SIZE + TILE_SIZE / 2;
     let targetY = offsetY + y * TILE_SIZE + TILE_SIZE / 2 + 25;
-    if (drawPlayerX === 0 && drawPlayerY === 0) {
+    if(!drawPlayerX){
     drawPlayerX = targetX;
+  }
+  if(!drawPlayerY){
     drawPlayerY = targetY;
-}
+  }
     const HERO_SIZE = 40;
-    drawPlayerX += (targetX - drawPlayerX) * 0.05;
-    drawPlayerY += (targetY - drawPlayerY) * 0.05;
+    drawPlayerX += (targetX - drawPlayerX) * 0.1;
+    drawPlayerY += (targetY - drawPlayerY) * 0.1;
     ctx.beginPath();
     ctx.arc(
     drawPlayerX,
@@ -338,12 +364,14 @@ function drawMap(){
         drawPlayerY = targetY;
     }
 }
-
-function gameLoop(){
-    if(scene === "map"){
-        drawMap();
+let lastTime = 0;
+function gameLoop(timestamp){
+    if(timestamp - lastTime > 50){
+        if(scene === "map"){
+            drawMap();
+            console.log("drawMap");
+        }
+        lastTime = timestamp;
     }
     requestAnimationFrame(gameLoop);
 }
-
-gameLoop();

@@ -13,26 +13,53 @@ function chance(rate){
 let MAP = [];
 function start_Game(){
   let name = document.getElementById("nameInput").value;
-  MAP = structuredClone(stagedata.MAP);
-  enemyMaster = structuredClone(stagedata.enemies);
-  boss = structuredClone(stagedata.boss);
+  MAP = structuredClone(stagedata[1].MAP);
+  enemyMaster = structuredClone(stagedata[1].enemies);
+  boss = structuredClone(stagedata[1].boss || 0);
+  let job = document.getElementById("jobSelect").value;
+  player.job = job;
+  if (job == "warrior"){
+    player.attack += 2;
+    player.mp -=1;
+    player.maxmp -=1;
+  }else if (job == "mage"){
+    player.attack -= 1;
+    player.maxmp += 2;
+    player.mp += 2;
+  }else if (job == "thief"){
+    player.attack += 1;
+    player.hp -= 1;
+    player.maxhp -= 1;
+  }
+  moving = false;
+  x=0;
+  y=0;
+  drawPlayerX = 0;
+  drawPlayerY = 0;
+  gameLoop();
   if (name !== ""){
     player.name = name
   }
   startTime = Date.now();
   change_scene("map")
+  render();
   message="";
 }
 
 function reset_Game(){
+  stage=1;
   player = {name:"勇者",hp:30,maxhp:30,mp:5,maxmp:5,attack:5,level:1,exp:0,defense:0,force:0,gold:0,defeatedEnemies:0};
-  enemyMaster = structuredClone(stagedata.enemies);
-  boss = structuredClone(stagedata.boss);
+  enemyMaster = structuredClone(stagedata[stage].enemies);
+  boss = structuredClone(stagedata[stage].boss);
   turn = "player";
+  moving = false;
   x=0;
   y=0;
+  stagedata[1].treasure = "closed";
+  stagedata[2].treasure = "closed";
   equipment = {weapon:"素手",armor:"布きれ"}
   ownequipment = [];
+  inventry = {potion:0,ether:0};
   change_scene("start")
 }
 
@@ -44,7 +71,7 @@ async function move(muki){
     set_Message("移動中は操作できません");
     return;}
   if (muki=='right'){
-    if (x<2){
+    if (x<4){
       x++;
     }else{return}
   }
@@ -65,16 +92,45 @@ async function move(muki){
   moving = true;
   await wait(1500);
   moving = false;
-  if (MAP[y][x]==stagedata.tiles.battle){
+  if (MAP[y][x]==stagedata[stage].tiles.battle){
     if (chance(0.5)){
       flag = "normal"
       await start_Battle();
     }
-  }else if (MAP[y][x]==stagedata.tiles.heal){
+  }else if (MAP[y][x]==stagedata[stage].tiles.heal){
     await full_heal();
-  }else if (MAP[y][x]==stagedata.tiles.boss){
+  }else if (MAP[y][x]==stagedata[stage].tiles.boss){
     flag = "boss"
     await start_Boss();
+  }else if (MAP[y][x]==stagedata[stage].tiles.treasure){
+    if (stagedata[stage].treasure == "closed"){
+      stagedata[stage].treasure = "opened";
+    if (chance(0.5)){
+      inventry.potion++;
+      set_Message("宝箱からポーションを手に入れた！");
+    }else{
+      inventry.ether++;
+      set_Message("宝箱からエーテルを手に入れた！");
+    }
+  }
+  else{
+    set_Message("宝箱は空っぽだ！");
+  }
+  }else if (MAP[y][x]==stagedata[stage].tiles.entrance){
+    if (stage==1){
+      stage = 2;
+      x=0;
+      y=0;
+    }
+    else{
+      stage=1;
+      x=4;
+      y=2;
+    }
+    MAP = structuredClone(stagedata[stage].MAP);
+    enemyMaster = structuredClone(stagedata[stage].enemies);
+    boss = structuredClone(stagedata[stage].boss || 0);
+    console.log(x,y);
   }
 }
 render();
@@ -286,11 +342,25 @@ async function level_up(){
   player.level++;
   await wait(1000);
   set_Message(player.name +"はレベル"+player.level+"になった!!");
-  player.maxhp+=5;
-  player.hp+=5;
-  player.maxmp+=2;
-  player.mp+=2;
-  player.attack+=1;
+  if(player.job=="warrior"){
+    player.maxhp += 6;
+    player.hp += 6;
+    player.attack += 2;
+}
+else if(player.job=="mage"){
+    player.maxhp += 3;
+    player.hp += 3;
+    player.maxmp += 4;
+    player.mp += 4;
+    player.attack += 1;
+}
+else if(player.job=="thief"){
+    player.maxhp += 4;
+    player.hp += 4;
+    player.maxmp += 2;
+    player.mp += 2;
+    player.attack += 1;
+}
   if(player.level % 4 == 0){
     player.defense += 1;
 }
@@ -319,10 +389,12 @@ async function use_item(item_name){
   }
   set_Message(item_name +"を使った");
   await wait(1000);
+  if (previousScene == "battle"){
   turn="enemy";
   change_scene("battle");
   await wait(1000);
   e_attack();
+  }
 }
 
 async function drop_item(){
